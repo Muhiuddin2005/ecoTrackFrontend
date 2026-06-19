@@ -45,6 +45,12 @@ const [loading, setLoading] = useState(true);
       })
     ])
       .then(([data, tipsData, eventsData, statsData]) => {
+        console.log("EcoTrack Home Data Loaded:", {
+          challenges: data,
+          tips: tipsData,
+          events: eventsData,
+          stats: statsData
+        });
         setChallenges(data);
         setTips(tipsData);
         
