@@ -48,9 +48,7 @@ const [loading, setLoading] = useState(true);
         setChallenges(data);
         setTips(tipsData);
         
-        // Filter and limit to 3 events
-        const futureEvents = eventsData.filter(event => new Date(event.date) >= new Date());
-        setEvents(futureEvents.slice(0, 3));
+        setEvents(eventsData);
         
         setStats(statsData);
       })
