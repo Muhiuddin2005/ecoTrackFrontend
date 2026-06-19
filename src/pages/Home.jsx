@@ -77,54 +77,42 @@ if (loading) return <Spinner/>
 
 
       <div className="w-full flex justify-center items-center py-10 bg-base-200">
-        {events.length > 0 ? (
+        {challenges.length > 0 ? (
           <Swiper
             modules={[Pagination, Autoplay]}
             pagination={{ clickable: true }}
             autoplay={{ delay: 3000, disableOnInteraction: false }}
-            loop={events.length > 1}
+            loop={challenges.slice(0, 3).length > 1}
             className="w-full max-w-6xl rounded-2xl shadow-lg"
           >
-            {events.map((event) => {
-              let imageUrl = "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=1000";
-              const titleLower = event.title?.toLowerCase() || "";
-              if (titleLower.includes("garden")) {
-                imageUrl = "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=1000";
-              } else if (titleLower.includes("cooking") || titleLower.includes("food")) {
-                imageUrl = "https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=1000";
-              } else if (titleLower.includes("wildlife") || titleLower.includes("tour")) {
-                imageUrl = "https://images.unsplash.com/photo-1535083783855-76ae62b2914e?w=1000";
-              }
-
-              return (
-                <SwiperSlide
-                  key={event._id}
-                  className="flex flex-col items-center justify-center bg-base-100 border border-base-200/50 p-8 text-center rounded-2xl transition-all duration-300 hover:bg-base-200"
+            {challenges.slice(0, 3).map((challenge) => (
+              <SwiperSlide
+                key={challenge._id}
+                className="flex flex-col items-center justify-center bg-base-100 border border-base-200/50 p-8 text-center rounded-2xl transition-all duration-300 hover:bg-base-200"
+              >
+                <img
+                  src={challenge.imageUrl}
+                  alt={challenge.title}
+                  className="h-100 rounded-xl mb-5 w-full object-cover shadow-md transition-transform duration-300 hover:scale-105"
+                />
+                <h2 className="text-2xl font-bold text-primary mb-2">
+                  {challenge.title}
+                </h2>
+                <p className="text-base-content/80 mb-4">
+                  {challenge.description?.slice(0, 80)}...
+                </p>
+                <MyLink
+                  to={`/challenge-details/${challenge._id}`}
+                  className="bg-primary text-primary-content px-5 py-2 rounded-md font-medium hover:bg-primary/90 transition-all duration-300 inline-block cursor-pointer"
                 >
-                  <img
-                    src={imageUrl}
-                    alt={event.title}
-                    className="h-100 rounded-xl mb-5 w-full object-cover shadow-md transition-transform duration-300 hover:scale-105"
-                  />
-                  <h2 className="text-2xl font-bold text-primary mb-2">
-                    {event.title}
-                  </h2>
-                  <p className="text-sm text-base-content/75 mb-2 font-medium">
-                    Date: {new Date(event.date).toLocaleDateString()} | Location: {event.location}
-                  </p>
-                  <p className="text-base-content/80 mb-4">
-                    {event.description?.slice(0, 120)}...
-                  </p>
-                  <div className="badge badge-secondary py-3 px-4 font-semibold">
-                    {event.currentParticipants || 0} / {event.maxParticipants || 0} Joined
-                  </div>
-                </SwiperSlide>
-              );
-            })}
+                  View Challenge
+                </MyLink>
+              </SwiperSlide>
+            ))}
           </Swiper>
         ) : (
           <div className="text-center text-base-content/60 font-medium py-10 bg-base-100 rounded-2xl shadow-md p-8 w-full max-w-6xl">
-            No featured events available.
+            No active challenges available.
           </div>
         )}
       </div>
@@ -133,11 +121,11 @@ if (loading) return <Spinner/>
         {/* Cards...................... */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         {challenges.length > 0
-        ? challenges.slice(0, 5).map((challenge) => (
+        ? challenges.slice(0, 6).map((challenge) => (
             <Challenge key={challenge._id} challenge={challenge} />
           ))
         :
-          Array.from({ length: 5 }).map((_, index) => (
+          Array.from({ length: 6 }).map((_, index) => (
             <SkeletonChallengeCard key={index} />
           ))}
       </div>
