@@ -98,8 +98,9 @@ const ChallengesPage = () => {
             <input
               type="date"
               value={startDate}
+              onClick={(e) => e.target.showPicker?.()}
               onChange={(e) => setStartDate(e.target.value)}
-              className="input input-bordered w-full bg-base-100 border-base-300 text-base-content focus:ring-2 focus:ring-primary focus:outline-none rounded-lg p-2"
+              className="input input-bordered w-full bg-base-100 border-base-300 text-base-content focus:ring-2 focus:ring-primary focus:outline-none rounded-lg p-2 cursor-pointer"
             />
           </div>
 
@@ -108,8 +109,9 @@ const ChallengesPage = () => {
             <input
               type="date"
               value={endDate}
+              onClick={(e) => e.target.showPicker?.()}
               onChange={(e) => setEndDate(e.target.value)}
-              className="input input-bordered w-full bg-base-100 border-base-300 text-base-content focus:ring-2 focus:ring-primary focus:outline-none rounded-lg p-2"
+              className="input input-bordered w-full bg-base-100 border-base-300 text-base-content focus:ring-2 focus:ring-primary focus:outline-none rounded-lg p-2 cursor-pointer"
             />
           </div>
         </div>

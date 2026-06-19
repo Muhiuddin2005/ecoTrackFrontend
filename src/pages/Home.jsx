@@ -1,4 +1,3 @@
-import Challenge from "../components/Challenge";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
@@ -6,14 +5,40 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, LabelList, ResponsiveContainer, Cell } from "recharts";
-import SkeletonChallengeCard from "../components/SkeletonChallengeCard";
-import Skeleton from "react-loading-skeleton";
 import Spinner from "../components/Spinner";
 import MyLink from "../components/MyLink";
 
 
+const getEventImage = (title) => {
+  const t = title ? title.toLowerCase() : "";
+  if (t.includes("clean-up") || t.includes("cleaning")) {
+    return "https://images.unsplash.com/photo-1618477388954-7852f32655ec?auto=format&fit=crop&w=1200&q=80";
+  }
+  if (t.includes("tree") || t.includes("plantation")) {
+    return "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=1200&q=80";
+  }
+  if (t.includes("beach")) {
+    return "https://images.unsplash.com/photo-1526951914846-8a59b9d4be5e?auto=format&fit=crop&w=1200&q=80";
+  }
+  if (t.includes("recycle") || t.includes("recycling") || t.includes("workshop")) {
+    return "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=1200&q=80";
+  }
+  if (t.includes("solar") || t.includes("seminar")) {
+    return "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1200&q=80";
+  }
+  if (t.includes("wildlife") || t.includes("nature") || t.includes("tour")) {
+    return "https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?auto=format&fit=crop&w=1200&q=80";
+  }
+  if (t.includes("cook") || t.includes("cooking")) {
+    return "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80";
+  }
+  if (t.includes("garden")) {
+    return "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1200&q=80";
+  }
+  return "https://images.unsplash.com/photo-1501854140801-50d01698950b?auto=format&fit=crop&w=1200&q=80";
+};
+
 const Home = () => {
-  const [challenges, setChallenges] = useState([]);
   const [tips, setTips] = useState([]);
   const [events, setEvents] = useState([]);
   const [stats, setStats] = useState({
@@ -35,7 +60,6 @@ const [loading, setLoading] = useState(true);
     };
 
     Promise.all([
-      fetchJson("https://ass-10-sigma.vercel.app/active-challenges", []),
       fetchJson("https://ass-10-sigma.vercel.app/latest-tips", []),
       fetchJson("https://ass-10-sigma.vercel.app/featured-events", []),
       fetchJson("https://ass-10-sigma.vercel.app/live-stats", {
@@ -44,18 +68,14 @@ const [loading, setLoading] = useState(true);
         totalWaterLiterSaved: 0
       })
     ])
-      .then(([data, tipsData, eventsData, statsData]) => {
+      .then(([tipsData, eventsData, statsData]) => {
         console.log("EcoTrack Home Data Loaded:", {
-          challenges: data,
           tips: tipsData,
           events: eventsData,
           stats: statsData
         });
-        setChallenges(data);
         setTips(tipsData);
-        
         setEvents(eventsData);
-        
         setStats(statsData);
       })
       .finally(() => setLoading(false));
@@ -77,57 +97,49 @@ if (loading) return <Spinner/>
 
 
       <div className="w-full flex justify-center items-center py-10 bg-base-200">
-        {challenges.length > 0 ? (
+        {events.length > 0 ? (
           <Swiper
             modules={[Pagination, Autoplay]}
             pagination={{ clickable: true }}
             autoplay={{ delay: 3000, disableOnInteraction: false }}
-            loop={challenges.slice(0, 3).length > 1}
+            loop={events.slice(0, 3).length > 1}
             className="w-full max-w-6xl rounded-2xl shadow-lg"
           >
-            {challenges.slice(0, 3).map((challenge) => (
+            {events.slice(0, 3).map((event) => (
               <SwiperSlide
-                key={challenge._id}
+                key={event._id}
                 className="flex flex-col items-center justify-center bg-base-100 border border-base-200/50 p-8 text-center rounded-2xl transition-all duration-300 hover:bg-base-200"
               >
-                <img
-                  src={challenge.imageUrl}
-                  alt={challenge.title}
-                  className="h-100 rounded-xl mb-5 w-full object-cover shadow-md transition-transform duration-300 hover:scale-105"
-                />
-                <h2 className="text-2xl font-bold text-primary mb-2">
-                  {challenge.title}
-                </h2>
-                <p className="text-base-content/80 mb-4">
-                  {challenge.description?.slice(0, 80)}...
+                <div className="w-full h-96 rounded-xl mb-5 flex flex-col items-center justify-center text-white shadow-md p-6 relative overflow-hidden group">
+                  <img
+                    src={getEventImage(event.title)}
+                    alt={event.title}
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-black/40"></div>
+                  <div className="relative z-10 flex flex-col items-center">
+                    <span className="text-6xl mb-4 animate-bounce">📅</span>
+                    <span className="text-3xl font-extrabold tracking-wide mb-2 drop-shadow-md">
+                      {event.title}
+                    </span>
+                    <div className="flex items-center gap-4 text-lg font-semibold bg-black/30 backdrop-blur-md py-2 px-6 rounded-full mt-2 border border-white/10">
+                      <span>📍 {event.location}</span>
+                      <span>•</span>
+                      <span>🕒 {new Date(event.date).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-base-content/80 mb-4 max-w-2xl text-lg leading-relaxed">
+                  {event.description}
                 </p>
-                <MyLink
-                  to={`/challenge-details/${challenge._id}`}
-                  className="bg-primary text-primary-content px-5 py-2 rounded-md font-medium hover:bg-primary/90 transition-all duration-300 inline-block cursor-pointer"
-                >
-                  View Challenge
-                </MyLink>
               </SwiperSlide>
             ))}
           </Swiper>
         ) : (
           <div className="text-center text-base-content/60 font-medium py-10 bg-base-100 rounded-2xl shadow-md p-8 w-full max-w-6xl">
-            No active challenges available.
+            No featured events available.
           </div>
         )}
-      </div>
-
-
-        {/* Cards...................... */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-        {challenges.length > 0
-        ? challenges.slice(0, 6).map((challenge) => (
-            <Challenge key={challenge._id} challenge={challenge} />
-          ))
-        :
-          Array.from({ length: 6 }).map((_, index) => (
-            <SkeletonChallengeCard key={index} />
-          ))}
       </div>
   
 
@@ -142,18 +154,7 @@ if (loading) return <Spinner/>
   <div className="w-full max-w-4xl">
     <h2 className="text-2xl font-semibold mb-6 text-center text-primary">Recent Tips</h2>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {loading
-            ? Array.from({ length: 4 }).map((index) => (
-                <div
-                  key={index}
-                  className="p-5 border border-base-300 bg-base-100 rounded-2xl shadow-lg transition transform duration-300"
-                >
-                  <Skeleton height={20} width="70%" className="mb-2" />
-                  <Skeleton height={14} width="50%" className="mb-3" />
-                  <Skeleton count={3} height={12} className="mb-2" />
-                </div>
-              ))
-            :tips.map((tip, index) => (
+      {tips.map((tip, index) => (
         <div 
           key={index} 
           className="p-5 border border-base-200/60 bg-base-100 rounded-2xl shadow-lg hover:shadow-2xl hover:bg-base-200 transition transform duration-300" 
@@ -161,33 +162,6 @@ if (loading) return <Spinner/>
           <h3 className="font-semibold text-lg mb-1 text-primary">{tip.title}</h3>
           <p className="text-sm text-base-content/70 mb-2 font-medium">By {tip.authorName} | Upvotes: {tip.upvotes}</p>
           <p className="text-base-content/85 text-sm">{tip.content}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-
-  <div className="w-full max-w-4xl">
-    <h2 className="text-2xl font-semibold mb-6 text-center text-primary">Featured Events</h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {loading
-            ? Array.from({ length: 4 }).map((index) => (
-                <div
-                  key={index}
-                  className="p-5 border border-base-300 bg-base-100 rounded-2xl shadow-lg transition transform duration-300"
-                >
-                  <Skeleton height={20} width="70%" className="mb-2" />
-                  <Skeleton height={14} width="50%" className="mb-3" />
-                  <Skeleton count={3} height={12} className="mb-2" />
-                </div>
-              ))
-            :events.map((event, index) => (
-        <div 
-          key={index} 
-          className="p-5 border border-base-200/60 bg-base-100 rounded-2xl shadow-lg hover:shadow-2xl hover:bg-base-200 transition transform duration-300"
-        >
-          <h3 className="font-semibold text-lg mb-1 text-primary">{event.title}</h3>
-          <p className="text-sm text-base-content/70 mb-2 font-medium">{new Date(event.date).toLocaleDateString()} | {event.location}</p>
-          <p className="text-base-content/85 text-sm">{event.description}</p>
         </div>
       ))}
     </div>
