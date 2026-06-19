@@ -26,6 +26,7 @@ const AddChallenge = () => {
           return;
         }
       } catch (err) {
+        console.error("Image upload error:", err);
         showError("Image upload failed");
         return;
       }
@@ -56,7 +57,7 @@ const AddChallenge = () => {
       body: JSON.stringify(formData),
     })
       .then((res) => res.json())
-      .then((data) => {
+      .then(() => {
         showSuccess("Challenge added successfully!");
         e.target.reset();
       })

@@ -3,7 +3,7 @@ import { AuthContext } from "../context/AuthContext";
 import Spinner from "../components/Spinner";
 import { NavLink } from "react-router";
 
-const myAddedChallenges = () => {
+const MyAddedChallenges = () => {
   const { user } = use(AuthContext)
   const [loading, setLoading] = useState(true)
   const [challenges, setChallenges] = useState([])
@@ -74,4 +74,4 @@ const myAddedChallenges = () => {
   );
 };
 
-export default myAddedChallenges;
+export default MyAddedChallenges;

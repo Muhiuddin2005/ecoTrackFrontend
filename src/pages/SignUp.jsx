@@ -70,6 +70,7 @@ const SignUp = () => {
           photoURL = imgData.data.url;
         }
       } catch (err) {
+        console.error("Image upload failed:", err);
         showError("Image upload failed, using default avatar.");
       }
     }

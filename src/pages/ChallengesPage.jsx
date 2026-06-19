@@ -10,6 +10,7 @@ const ChallengesPage = () => {
   const [maxParticipants, setMaxParticipants] = useState('');
 
   const filterChallenges = async (filterQuery) => {
+    setLoading(true);
     try {
       const res = await fetch(`https://ass-10-sigma.vercel.app/api/challenges/filter${filterQuery}`);
       if (!res.ok) {
@@ -69,9 +70,11 @@ const ChallengesPage = () => {
         </button>
       </form>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-        {challenges.length > 0
+        {loading
+          ? Array.from({ length: 4 }).map((_, index) => <SkeletonChallengeCard key={index} />)
+          : challenges.length > 0
           ? challenges.map((challenge) => <Challenge key={challenge._id} challenge={challenge} />)
-          : Array.from({ length: 4 }).map((_, index) => <SkeletonChallengeCard key={index} />)}
+          : <div className="col-span-full text-center text-base-content/60 font-medium py-10">No challenges found.</div>}
       </div>
     </>
   );

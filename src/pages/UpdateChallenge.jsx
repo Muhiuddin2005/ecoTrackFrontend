@@ -32,6 +32,7 @@ const UpdateChallenge = () => {
           return;
         }
       } catch (err) {
+        console.error("Image upload failed:", err);
         showError("Image upload failed");
         return;
       }
