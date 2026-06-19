@@ -1,4 +1,4 @@
-import Challenge from "../components/challenge";
+import Challenge from "../components/Challenge";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";

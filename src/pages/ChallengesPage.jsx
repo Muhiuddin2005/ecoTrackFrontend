@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Challenge from '../components/challenge';
+import Challenge from '../components/Challenge';
 import SkeletonChallengeCard from '../components/SkeletonChallengeCard';
 
 const ChallengesPage = () => {
