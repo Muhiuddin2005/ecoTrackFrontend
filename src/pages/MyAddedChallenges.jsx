@@ -1,6 +1,6 @@
 import { use, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { BounceLoader } from "react-spinners";
+import Spinner from "../components/Spinner";
 import { NavLink } from "react-router";
 
 const myAddedChallenges = () => {
@@ -23,13 +23,7 @@ const myAddedChallenges = () => {
   console.log(challenges)
 
   if (loading) {
-    return  <div className="min-h-screen flex items-center justify-center">
-        <BounceLoader
-  color="#0ff051"
-  size={200}
-  speedMultiplier={3}
-/>
-      </div>
+    return <Spinner />;
   }
   if (challenges.length === 0) {
     return (

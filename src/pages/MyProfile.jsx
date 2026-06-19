@@ -7,7 +7,7 @@ const MyProfile = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-center p-6">
       <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-sm">
         <img
-          src={user.photoURL || "https://avatar.iran.liara.run/public"}
+          src={user?.photoURL || `https://ui-avatars.com/api/?name=${user?.displayName || "User"}&background=random`}
           alt="User Avatar"
           className="w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-green-200"
         />

@@ -6,16 +6,23 @@ const ChallengesPage = () => {
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
   const [minParticipants, setMinParticipants] = useState('');
   const [maxParticipants, setMaxParticipants] = useState('');
 
   const filterChallenges = async (filterQuery) => {
+    try {
       const res = await fetch(`https://ass-10-sigma.vercel.app/api/challenges/filter${filterQuery}`);
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
       const data = await res.json();
       setChallenges(data);
-      setLoading(false)
+    } catch (err) {
+      console.error("Error fetching filtered challenges:", err);
+      setChallenges([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -27,8 +34,6 @@ const ChallengesPage = () => {
     const params = new URLSearchParams();
 
     if (category) params.append('category', category);
-    if (startDate) params.append('startDate', startDate);
-    if (endDate) params.append('endDate', endDate);
     if (minParticipants) params.append('minParticipants', minParticipants);
     if (maxParticipants) params.append('maxParticipants', maxParticipants);
 
@@ -45,24 +50,6 @@ const ChallengesPage = () => {
           onChange={(e) => setCategory(e.target.value)}
           className="border p-2 rounded"
         />
-       <div className="relative">
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            className="border p-2 rounded pl-10"
-          />
-          <span className="absolute left-2 top-2.5 text-gray-400">Start Date</span>
-        </div>
-        <div className="relative">
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            className="border p-2 rounded pl-10"
-          />
-          <span className="absolute left-2 top-2.5 text-gray-400">End Date</span>
-        </div>
         <input
           type="number"
           placeholder="Min Participants"

@@ -1,24 +1,38 @@
-import { use } from "react";
+import { use, useState, useEffect } from "react";
 import { signOut } from "firebase/auth";
-import { toast } from "react-toastify";
 import { auth } from "../firebase/firebase.config";
 import { AuthContext } from "../context/AuthContext";
 import { BounceLoader } from "react-spinners";
 import MyLink from "./MyLink";
 import { NavLink } from "react-router";
+import { FaSun, FaMoon } from "react-icons/fa";
+import { showSuccess, showError } from "../utils/swal";
 
 const Navbar = () => {
   const { user, setUser, loading } = use(AuthContext);
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") || 
+    (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
+  );
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
+  };
 
   const logOut = (e) => {
     e.preventDefault();
     signOut(auth)
       .then(() => {
-        toast.success("Signed out!");
+        showSuccess("Signed out successfully!");
         setUser(null);
       })
       .catch((error) => {
-        toast.error(error.message);
+        showError(error.message);
       });
   };
 
@@ -91,7 +105,18 @@ const Navbar = () => {
           </li>
         </ul>
       </div>
-      <div className="navbar-end flex gap-2">
+      <div className="navbar-end flex items-center gap-2">
+        <button
+          onClick={toggleTheme}
+          className="btn btn-ghost btn-circle text-xl transition-all duration-300 hover:bg-base-200 cursor-pointer"
+          aria-label="Toggle Theme"
+        >
+          {theme === "light" ? (
+            <FaMoon className="text-emerald-700 hover:scale-110 transition-transform duration-300" />
+          ) : (
+            <FaSun className="text-amber-400 hover:scale-110 transition-transform duration-300" />
+          )}
+        </button>
         {loading ? (
           <BounceLoader color="#0ff051" size={50} speedMultiplier={3} />
         ) : user ? (
@@ -99,7 +124,7 @@ const Navbar = () => {
             <summary className="btn m-1 flex items-center gap-2">
               <img
                 className="h-8 w-8 rounded-full"
-                src={user?.photoURL || "https://avatar.iran.liara.run/public"}
+                src={user?.photoURL || `https://ui-avatars.com/api/?name=${user?.displayName || "User"}&background=random`}
                 alt="User Avatar"
               />
               <span>{user?.displayName || "User"}</span>

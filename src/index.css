@@ -1,2 +1,46 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: #16a34a; /* Vibrant eco-green */
+  --color-primary-content: #ffffff;
+  --color-secondary: #0d9488; /* Fresh teal representing clean water */
+  --color-secondary-content: #ffffff;
+  --color-accent: #0284c7; /* Sky blue */
+  --color-accent-content: #ffffff;
+  --color-neutral: #1f2937;
+  --color-neutral-content: #f9fafb;
+  --color-base-100: #ffffff;
+  --color-base-200: #f0fdf4; /* Minty/light-green tint */
+  --color-base-300: #dcfce7;
+  --color-base-content: #111827;
+}
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  prefersdark: true;
+  --color-primary: #22c55e; /* Bright green for readability in dark mode */
+  --color-primary-content: #052e16;
+  --color-secondary: #14b8a6; /* Bright teal */
+  --color-secondary-content: #042f2e;
+  --color-accent: #38bdf8; /* Soft blue */
+  --color-accent-content: #0369a1;
+  --color-neutral: #1e293b;
+  --color-neutral-content: #f8fafc;
+  --color-base-100: #060c09; /* Premium deep dark forest green/black */
+  --color-base-200: #0c140f; /* Slightly lighter forest dark green */
+  --color-base-300: #142219;
+  --color-base-content: #ecfdf5; /* Off-white with a touch of fresh mint */
+}
+
+/* Global transitions and apply themes to html/body */
+html, body {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  scroll-behavior: smooth;
+}
+body {
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
+}

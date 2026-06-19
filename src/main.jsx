@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import { RouterProvider } from "react-router";
 import { router } from "./routes/routes";
-import { ToastContainer } from "react-toastify";
 import Authprovider from "./context/Authprovider";
 import 'react-loading-skeleton/dist/skeleton.css';
 
@@ -12,7 +11,6 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Authprovider>
       <RouterProvider router={router} />
-      <ToastContainer />
     </Authprovider>
   </StrictMode>
 );
